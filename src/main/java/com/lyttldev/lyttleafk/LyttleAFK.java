@@ -49,6 +49,7 @@ public final class LyttleAFK extends JavaPlugin {
         switch (config.general.get("config_version").toString()) {
             case "0":
                 // Update config version.
+                config.general.set("scoreboard_name", config.general.get("scoreboard_name"));
                 config.general.set("config_version", 1);
 
                 // Recheck if the config is fully migrated.
