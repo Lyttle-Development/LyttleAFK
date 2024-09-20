@@ -1,7 +1,6 @@
 package com.lyttldev.lyttleafk.commands;
 
 import com.lyttldev.lyttleafk.LyttleAFK;
-import com.lyttldev.lyttleafk.utils.Message;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -21,7 +20,7 @@ public class LyttleAFKCommand implements CommandExecutor, TabCompleter {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         // Check for permission
         if (!(sender.hasPermission("lyttleafk.lyttleafk"))) {
-            Message.sendMessage(sender, "no_permission");
+            sender.sendMessage("no_permission");
             return true;
         }
 
@@ -33,7 +32,7 @@ public class LyttleAFKCommand implements CommandExecutor, TabCompleter {
         if (args.length == 1) {
             if (args[0].equalsIgnoreCase("reload")) {
                 plugin.config.reload();
-                Message.sendMessageRaw(sender, "The config has been reloaded");
+                sender.sendMessage("The config has been reloaded");
             }
         }
         return true;

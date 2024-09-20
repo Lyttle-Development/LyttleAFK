@@ -1,10 +1,9 @@
 package com.lyttldev.lyttleafk;
 
 import com.lyttldev.lyttleafk.commands.*;
-import com.lyttldev.lyttleafk.handlers.PlayerJoinListener;
+import com.lyttldev.lyttleafk.modules.*;
+import com.lyttldev.lyttleafk.handlers.PlayerMoveListener;
 import com.lyttldev.lyttleafk.types.Configs;
-import com.lyttldev.lyttleafk.utils.Console;
-import com.lyttldev.lyttleafk.utils.Message;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -21,18 +20,13 @@ public final class LyttleAFK extends JavaPlugin {
         migrateConfig();
 
         // Plugin startup logic
-        Console.init(this);
-        Message.init(this);
+        PlayerAFK.initTimer();
 
         // Commands
         new LyttleAFKCommand(this);
 
         // Listeners
-        new PlayerJoinListener(this);
-    }
-
-    @Override
-    public void onDisable() {
+        new PlayerMoveListener(this);
     }
 
     @Override
@@ -41,17 +35,10 @@ public final class LyttleAFK extends JavaPlugin {
         if (!new File(getDataFolder(), configPath).exists())
             saveResource(configPath, false);
 
-        String messagesPath = "messages.yml";
-        if (!new File(getDataFolder(), messagesPath).exists())
-            saveResource(messagesPath, false);
-
         // Defaults:
         String defaultPath = "#defaults/";
         String defaultGeneralPath =  defaultPath + configPath;
         saveResource(defaultGeneralPath, true);
-
-        String defaultMessagesPath =  defaultPath + messagesPath;
-        saveResource(defaultMessagesPath, true);
     }
 
     private void migrateConfig() {
@@ -61,23 +48,6 @@ public final class LyttleAFK extends JavaPlugin {
 
         switch (config.general.get("config_version").toString()) {
             case "0":
-                // Migrate config entries.
-                config.messages.set("prefix", config.defaultMessages.get("prefix"));
-                config.messages.set("no_permission", config.defaultMessages.get("no_permission"));
-                config.messages.set("player_not_found", config.defaultMessages.get("player_not_found"));
-                config.messages.set("must_be_player", config.defaultMessages.get("must_be_player"));
-                config.messages.set("message_not_found", config.defaultMessages.get("message_not_found"));
-                config.messages.set("staff_usage", config.defaultMessages.get("staff_usage"));
-                config.messages.set("staff_no_reason", config.defaultMessages.get("staff_no_reason"));
-                config.messages.set("staff_no_location", config.defaultMessages.get("staff_no_location"));
-                config.messages.set("staff_no_inventory", config.defaultMessages.get("staff_no_inventory"));
-                config.messages.set("staff_inventory_restore_failed", config.defaultMessages.get("staff_inventory_restore_failed"));
-                config.messages.set("staff_enabled", config.defaultMessages.get("staff_enabled"));
-                config.messages.set("staff_enable_failed", config.defaultMessages.get("staff_enable_failed"));
-                config.messages.set("staff_disabled", config.defaultMessages.get("staff_disabled"));
-                config.messages.set("staff_disable_failed", config.defaultMessages.get("staff_disable_failed"));
-                config.messages.set("staff_log", config.defaultMessages.get("staff_log"));
-
                 // Update config version.
                 config.general.set("config_version", 1);
 
