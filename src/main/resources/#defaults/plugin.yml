@@ -1,0 +1,9 @@
+name: LyttleAFK
+version: '${projectVersion}'
+main: com.lyttldev.lyttleafk.LyttleAFK
+api-version: '1.21'
+commands:
+  lyttleafk:
+    usage: /lyttleafk [reload]
+    description: Shows plugin version and reload config files
+    permission: lyttleafk.staff

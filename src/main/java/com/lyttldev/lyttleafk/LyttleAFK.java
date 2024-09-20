@@ -1,7 +1,6 @@
 package com.lyttldev.lyttleafk;
 
 import com.lyttldev.lyttleafk.commands.*;
-import com.lyttldev.lyttleafk.database.SQLite;
 import com.lyttldev.lyttleafk.handlers.PlayerJoinListener;
 import com.lyttldev.lyttleafk.types.Configs;
 import com.lyttldev.lyttleafk.utils.Console;
@@ -34,10 +33,6 @@ public final class LyttleAFK extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Close SQLite database connection
-        if (sqlite != null) {
-            sqlite.closeConnection();
-        }
     }
 
     @Override

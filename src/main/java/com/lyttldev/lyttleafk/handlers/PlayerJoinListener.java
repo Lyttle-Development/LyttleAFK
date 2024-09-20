@@ -1,7 +1,6 @@
 package com.lyttldev.lyttleafk.handlers;
 
 import com.lyttldev.lyttleafk.LyttleAFK;
-import com.lyttldev.lyttleafk.commands.StaffCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,6 +13,6 @@ public class PlayerJoinListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        StaffCommand.onPlayerJoin(event.getPlayer());
+//        StaffCommand.onPlayerJoin(event.getPlayer());
     }
 }
