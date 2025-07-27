@@ -4,7 +4,6 @@ import com.lyttldev.lyttleafk.LyttleAFK;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Criteria;
 import org.bukkit.scoreboard.Scoreboard;
