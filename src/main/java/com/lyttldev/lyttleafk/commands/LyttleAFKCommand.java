@@ -1,48 +1,50 @@
 package com.lyttldev.lyttleafk.commands;
 
 import com.lyttldev.lyttleafk.LyttleAFK;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
+import com.mojang.brigadier.Command;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.context.CommandContext;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
+import io.papermc.paper.command.brigadier.Commands;
+import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
 
-import java.util.List;
+public class LyttleAFKCommand {
+    private static LyttleAFK plugin;
 
-public class LyttleAFKCommand implements CommandExecutor, TabCompleter {
-    private final LyttleAFK plugin;
+    public static void createCommand(LyttleAFK lyttlePlugin, Commands commands) {
+        plugin = lyttlePlugin;
 
-    public LyttleAFKCommand(LyttleAFK plugin) {
-        plugin.getCommand("lyttleafk").setExecutor(this);
-        this.plugin = plugin;
+        // Define the different nodes
+        LiteralArgumentBuilder<CommandSourceStack> top = Commands.literal("lyttleafk")
+                .then(Commands.literal("reload")
+                        .requires(source -> source.getSender().hasPermission("lyttleafk.lyttleafk.reload"))
+                        .executes(LyttleAFKCommand::reloadNode));
+
+        // Defines root node functions
+        top.requires(source -> source.getSender().hasPermission("lyttleafk.lyttleafk"));
+        top.executes(LyttleAFKCommand::rootNode);
+
+        // Finish the command
+        commands.register(
+                top.build(),
+                "Admin command for the LyttleAFK plugin"
+        );
     }
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        // Check for permission
-        if (!(sender.hasPermission("lyttleafk.lyttleafk"))) {
-            sender.sendMessage("no_permission");
-            return true;
-        }
 
-        if (args.length == 0) {
-            sender.sendMessage("plugin version: 1.1.2");
-            return true;
-        }
-
-        if (args.length == 1) {
-            if (args[0].equalsIgnoreCase("reload")) {
-                plugin.config.reload();
-                sender.sendMessage("The config has been reloaded");
-            }
-        }
-        return true;
+    private static int rootNode(CommandContext<CommandSourceStack> context) {
+        CommandSender sender = context.getSource().getSender();
+        Component version = Component.text("Plugin version: " + plugin.getDescription().getVersion());
+        sender.sendMessage(version);
+        return Command.SINGLE_SUCCESS;
     }
 
-    @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] arguments) {
-        if (arguments.length == 1) {
-            return List.of("reload");
-        }
-        return List.of();
+    private static int reloadNode(CommandContext<CommandSourceStack> context) {
+        final CommandSender sender = context.getSource().getSender();
+        plugin.config.reload();
+        sender.sendMessage(Component.text("The config has been reloaded"));
+        return Command.SINGLE_SUCCESS;
     }
+
 }

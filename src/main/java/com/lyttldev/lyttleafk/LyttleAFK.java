@@ -4,6 +4,10 @@ import com.lyttldev.lyttleafk.commands.*;
 import com.lyttldev.lyttleafk.modules.*;
 import com.lyttldev.lyttleafk.handlers.PlayerMoveListener;
 import com.lyttldev.lyttleafk.types.Configs;
+import io.papermc.paper.command.brigadier.Commands;
+import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
+import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -22,11 +26,19 @@ public final class LyttleAFK extends JavaPlugin {
         // Plugin startup logic
         PlayerAFK.initTimer();
 
-        // Commands
-        new LyttleAFKCommand(this);
+        // Register commands
+        LifecycleEventManager<Plugin> manager = this.getLifecycleManager();
+        manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
+            final Commands commands = event.registrar();
+            this.registerCommands(commands);
+        });
 
         // Listeners
         new PlayerMoveListener(this);
+    }
+
+    public void registerCommands(Commands commands) {
+        LyttleAFKCommand.createCommand(this, commands);
     }
 
     @Override

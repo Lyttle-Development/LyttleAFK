@@ -1,0 +1,8 @@
+name: LyttleAFK
+version: ${version}
+main: com.lyttldev.lyttleafk.LyttleAFK
+api-version: '1.21'
+authors:
+  - LyttleDevelopment
+  - ThatsATim
+  - Stualyttle

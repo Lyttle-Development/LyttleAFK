@@ -26,7 +26,7 @@ repositories {
 
 dependencies {
     api(libs.org.xerial.sqlite.jdbc)
-    compileOnly(libs.io.papermc.paper.paper.api)
+    compileOnly("io.papermc.paper:paper-api:" + (property("paperVersion") as String) + "-R0.1-SNAPSHOT")
     compileOnly(libs.net.luckperms.api)
 }
 
